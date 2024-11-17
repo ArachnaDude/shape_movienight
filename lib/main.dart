@@ -28,18 +28,51 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MovieList extends StatelessWidget {
+class MovieList extends StatefulWidget {
   const MovieList({super.key, required this.title});
 
   final String title;
 
   @override
+  State<MovieList> createState() => _MovieListState();
+}
+
+class _MovieListState extends State<MovieList> {
+  int selectedIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
+      body: Row(
+        children: [
+          SafeArea(
+            child: NavigationRail(
+              extended: true,
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.theaters),
+                  label: Text("Movie List"),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.bookmark),
+                  label: Text("Favourites"),
+                ),
+              ],
+              selectedIndex: selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Text('Selected Index: $selectedIndex'),
+            ),
+          ),
+        ],
       ),
-      body: const Placeholder(),
     );
   }
 }
